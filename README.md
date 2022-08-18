@@ -1,7 +1,7 @@
 # web3-multisigwallet
 
 ## description
-An simple example of multiwallet working mechanism, may have many security bugs, DO NOT use this code in your products.
+An simple example of multisigwallet working mechanism, may have many security bugs, DO NOT use this code in your products.
 
 ## what a multisig wallet's value?
 ### improve transaction security 
