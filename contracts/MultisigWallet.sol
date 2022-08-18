@@ -8,8 +8,9 @@ contract MultisigWallet {
 	
 	///当前余额，单位是wei
 	uint public balance;
-
+    ///合约拥有者、发布者，还没想好怎么用。
 	address owner;
+
     ///多签合作者，一般是平台1个，用户自己持有冷热钱包各1个。
 	///协作者创建后不能更改，如果需要更改，直接新建合约，防止中间有人作弊
 	address[] collaborators;
