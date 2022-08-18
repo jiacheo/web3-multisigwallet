@@ -17,7 +17,7 @@ contract MultisigWallet {
     ///最少签名人数
 	uint8 at_least_sign_count;
 
-    ///等待提款的金额
+    ///等待提款的金额，单位也是wei
 	uint waitfor_withdraw_wei;
     /// 提款的目标地址
 	address payable waitfor_withdraw_address;
@@ -26,8 +26,10 @@ contract MultisigWallet {
     ///当前已签名的列表
 	address[] current_signed;
 
+    ///罢免提款要求的对手签名列表
 	address[] current_cancel_counterparty_signed;
 
+    /// 记录转账多少次，可以设置一些条款，例如前10次免费，之后按xx比例收取手续费。 手续费打入xx帐户。
 	uint public withdraw_count;
 
 	constructor(address[] memory collaborators_, uint8 at_least_sign_count_) {
