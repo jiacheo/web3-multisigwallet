@@ -90,8 +90,8 @@ contract MultisigWallet {
 	
 
 	/// 充值转入，谁都可以转，用于收款
-	function topin() public payable {
-		require(msg.value > 0, "TOPIN must more than 0 wei, indeed the gas fee do not decrease if you topin a low value.");
+	receive() external payable {
+		require(msg.value > 0, "store must more than 0 wei, indeed the gas fee do not decrease if you topin a low value.");
 		balance += msg.value;
 	}
 
