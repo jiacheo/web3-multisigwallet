@@ -32,15 +32,29 @@ contract MultisigWallet {
     /// 记录转账多少次，可以设置一些条款，例如前10次免费，之后按xx比例收取手续费。 手续费打入xx帐户。
 	uint public withdraw_count;
 
+    /// 转账费率，单位是万分之一
+    uint public withdraw_fee_rate;
+    /// 前N次免费
+    uint public withdraw_free_count;
+    address payable platform_account;
+
 	constructor(address[] memory collaborators_, uint8 at_least_sign_count_) {
 		owner = msg.sender;
 		require(collaborators_.length > 0, "all collaborators count at least one");
 		require(no_duplicated_collaborators(), "the collaborators must no be duplicated");
 		require(at_least_sign_count_ > 0 && at_least_sign_count_ <= collaborators_.length, "at least sign count must more than 0 and less than or equals collaborators count");
-		collaborators = collaborators_;
-		
+		collaborators = collaborators_;		
 		at_least_sign_count = at_least_sign_count_;
+        //写死的平台收款帐户，就跟合同里面写明收款帐户差不多
+        platform_account = payable(0xdD870fA1b7C4700F2BD7f44238821C26f7392148);
+        withdraw_fee_rate = 20;
+        withdraw_free_count = 5;
 	}
+
+    function changePlatformAccount(address newAccount) public {
+        require(msg.sender == platform_account, "only platform account itself can change it to other account");
+        platform_account = payable(newAccount);
+    }
 
 	function no_duplicated_collaborators() private view returns (bool) {
 		bool duplicated = false;
@@ -89,6 +103,10 @@ contract MultisigWallet {
 		waitfor_withdraw_wei = weis;
 		waitfor_withdraw_address = targetAddress;
 		current_signed.push(msg.sender);
+        ///允许at_least_sign_count为1的情况，例如1/2帐户，拥有者任何一人都能转账。
+        if(signedCountEnough()) {
+			do_withdraw();
+		}
 	}
 
 	/// 增加一个另外全方，协作罢免发起方的提款请求
@@ -134,17 +152,29 @@ contract MultisigWallet {
 		current_signed.push(msg.sender);
 		//签名已足够，可以直接转账
 		if(signedCountEnough()) {
-			uint weis = waitfor_withdraw_wei;
-			waitfor_withdraw_wei = 0;
-			waitfor_withdraw_address.transfer(weis);
-			balance =  balance - weis;
-			withdraw_count++;
-			delete waitfor_withdraw_address ;
-			delete current_signed;
-			delete initiator;
-			delete current_cancel_counterparty_signed;
+			do_withdraw();
 		}
 	}
+
+    function do_withdraw() private {
+        uint weis = waitfor_withdraw_wei;
+        waitfor_withdraw_wei = 0;
+        waitfor_withdraw_address.transfer(weis);
+        balance =  balance - weis;
+        withdraw_count++;
+        delete waitfor_withdraw_address ;
+        delete current_signed;
+        delete initiator;
+        delete current_cancel_counterparty_signed;
+        if(withdraw_count > withdraw_free_count) {
+            do_pay_service_fee(weis);
+        }
+    }
+
+    function do_pay_service_fee(uint transferWeis) private {       
+        uint rate_wei = transferWeis / 10000 * withdraw_fee_rate;
+        platform_account.transfer(rate_wei);
+    }
 
 	/// 判断一个地址是否是在数组里，应该利用第三方类库，而不是自己造轮子
 	function address_array_in(address[] memory array, address member) private pure returns (bool) {

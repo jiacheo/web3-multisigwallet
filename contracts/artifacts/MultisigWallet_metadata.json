@@ -49,6 +49,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newAccount",
+						"type": "address"
+					}
+				],
+				"name": "changePlatformAccount",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "collaboratorSign",
 				"outputs": [],
@@ -92,6 +105,32 @@
 				],
 				"stateMutability": "view",
 				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdraw_fee_rate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdraw_free_count",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -116,6 +155,15 @@
 				},
 				"topin()": {
 					"notice": "充值转入，谁都可以转，用于收款"
+				},
+				"withdraw_count()": {
+					"notice": "记录转账多少次，可以设置一些条款，例如前10次免费，之后按xx比例收取手续费。 手续费打入xx帐户。"
+				},
+				"withdraw_fee_rate()": {
+					"notice": "转账费率，单位是万分之一"
+				},
+				"withdraw_free_count()": {
+					"notice": "前N次免费"
 				}
 			},
 			"notice": "多签名钱包简单实现。",
@@ -139,11 +187,11 @@
 	},
 	"sources": {
 		"contracts/MultisigWallet.sol": {
-			"keccak256": "0xa89b7d29c629299c053eeed7ade5bcddec7e5c79ab3e5b48b7b13c2c32bdc2d7",
+			"keccak256": "0x587d842b12fbff9ce43d189e83d05f31f64a864831f1419e55b80c8811051110",
 			"license": "LGPL-3.0-only",
 			"urls": [
-				"bzz-raw://ca277041ea7856feae04dbcb070a7a9ad0b8d873b3d5782bcdaead3ff8225f45",
-				"dweb:/ipfs/QmQwC15Keee7RaX565iymDN96mN71u7JPcv8vPK7HtPpog"
+				"bzz-raw://10c9212ae5b7102b83de9c8462a95e82df7a6f792df1a9d9175041f41e4508c9",
+				"dweb:/ipfs/QmcQwctpvMujknMT6HgEwEQywRNRsmDDBkFcavXdWhmRpy"
 			]
 		}
 	},
