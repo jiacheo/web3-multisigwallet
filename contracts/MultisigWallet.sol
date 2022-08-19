@@ -38,6 +38,29 @@ contract MultisigWallet {
     uint public withdraw_free_count;
     address payable platform_account;
 
+
+	///事件定义
+	//充钱、收款
+	event Deposit(address indexed sender,  uint indexed amount);
+
+	//发起转账
+	event ProcessWithdraw(address indexed initiator, uint indexed amount);
+
+	//协作方签名
+	event CollaboratorSign(address indexed collaborator);
+
+	//发起转账
+	event Withdraw(address indexed target_address, uint indexed amount);
+
+	//发起人取消
+	event CancelByInitiator(address indexed initiator);
+
+	//对手取消签名
+	event CancellingByCounterPartiesSign(address indexed counter_party);
+
+	//取消成功
+	event Cancelled(address indexed target_address, uint amount);
+
 	constructor(address[] memory collaborators_, uint8 at_least_sign_count_) {
 		owner = msg.sender;
 		require(collaborators_.length > 0, "all collaborators count at least one");
@@ -93,6 +116,7 @@ contract MultisigWallet {
 	receive() external payable {
 		require(msg.value > 0, "store must more than 0 wei, indeed the gas fee do not decrease if you topin a low value.");
 		balance += msg.value;
+		emit Deposit(msg.sender,  msg.value);
 	}
 
 	function process_withdraw(uint weis, address payable targetAddress) public onlyCollaborators {
@@ -103,6 +127,7 @@ contract MultisigWallet {
 		waitfor_withdraw_wei = weis;
 		waitfor_withdraw_address = targetAddress;
 		current_signed.push(msg.sender);
+		emit ProcessWithdraw(initiator, weis);
         ///允许at_least_sign_count为1的情况，例如1/2帐户，拥有者任何一人都能转账。
         if(signedCountEnough()) {
 			do_withdraw();
@@ -124,6 +149,9 @@ contract MultisigWallet {
 				signedCount++;
 			}
 		}
+
+		emit CancellingByCounterPartiesSign(msg.sender);
+
 		if(signedCount == collaborators.length - 1) {
 			do_cancel_withdraw();
 		}
@@ -132,16 +160,20 @@ contract MultisigWallet {
 	/// 发起方才能直接取消提款
 	function cancel_withdraw() public onlyCollaborators {
 		require(msg.sender == initiator, "only the initiator can cancel this process");
+		emit CancelByInitiator(initiator);
 		do_cancel_withdraw();
 	}
 
 	//取消提款，把数据都清理掉。
 	function do_cancel_withdraw() private {
+		uint amount = waitfor_withdraw_wei;
+		address target_address = waitfor_withdraw_address;
+		waitfor_withdraw_wei = 0;
 		delete initiator;
 		delete waitfor_withdraw_address ;
-		waitfor_withdraw_wei = 0;
 		delete current_signed;
 		delete current_cancel_counterparty_signed;
+		emit Cancelled(target_address, amount);
 	}
 
 	///协作方签名，只要进来这个函数，就是说明前面的以太坊认证已经通过，收集地址即可。
@@ -166,6 +198,7 @@ contract MultisigWallet {
         delete current_signed;
         delete initiator;
         delete current_cancel_counterparty_signed;
+		emit Withdraw(waitfor_withdraw_address, weis);
         if(withdraw_count > withdraw_free_count) {
             do_pay_service_fee(weis);
         }

@@ -22,6 +22,121 @@
 				"type": "constructor"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "initiator",
+						"type": "address"
+					}
+				],
+				"name": "CancelByInitiator",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "target_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Cancelled",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "counter_party",
+						"type": "address"
+					}
+				],
+				"name": "CancellingByCounterPartiesSign",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "collaborator",
+						"type": "address"
+					}
+				],
+				"name": "CollaboratorSign",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Deposit",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "initiator",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "ProcessWithdraw",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "target_address",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Withdraw",
+				"type": "event"
+			},
+			{
 				"inputs": [],
 				"name": "balance",
 				"outputs": [
@@ -88,13 +203,6 @@
 			},
 			{
 				"inputs": [],
-				"name": "topin",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "withdraw_count",
 				"outputs": [
 					{
@@ -131,6 +239,10 @@
 				],
 				"stateMutability": "view",
 				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
 			}
 		],
 		"devdoc": {
@@ -139,6 +251,11 @@
 			"version": 1
 		},
 		"userdoc": {
+			"events": {
+				"Deposit(address,uint256)": {
+					"notice": "事件定义"
+				}
+			},
 			"kind": "user",
 			"methods": {
 				"balance()": {
@@ -152,9 +269,6 @@
 				},
 				"collaboratorSign()": {
 					"notice": "协作方签名，只要进来这个函数，就是说明前面的以太坊认证已经通过，收集地址即可。 当最后一个签名方满足多签需求的时候，直接发起转账提款"
-				},
-				"topin()": {
-					"notice": "充值转入，谁都可以转，用于收款"
 				},
 				"withdraw_count()": {
 					"notice": "记录转账多少次，可以设置一些条款，例如前10次免费，之后按xx比例收取手续费。 手续费打入xx帐户。"
@@ -187,11 +301,11 @@
 	},
 	"sources": {
 		"contracts/MultisigWallet.sol": {
-			"keccak256": "0x587d842b12fbff9ce43d189e83d05f31f64a864831f1419e55b80c8811051110",
+			"keccak256": "0x0ff5be2ef7bf625c71998ab7f84d93f30f0f4e05c564670b2e6ea740256f69a1",
 			"license": "LGPL-3.0-only",
 			"urls": [
-				"bzz-raw://10c9212ae5b7102b83de9c8462a95e82df7a6f792df1a9d9175041f41e4508c9",
-				"dweb:/ipfs/QmcQwctpvMujknMT6HgEwEQywRNRsmDDBkFcavXdWhmRpy"
+				"bzz-raw://a86ff8e09400b27795dda6d89a4b6a7679803807f761b983081c9aee4413071a",
+				"dweb:/ipfs/QmesAGWPYEMkCiizodbBHnuuTX5QyGBexP6QK1aHukwg6d"
 			]
 		}
 	},
