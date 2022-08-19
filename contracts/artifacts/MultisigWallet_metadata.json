@@ -138,19 +138,6 @@
 			},
 			{
 				"inputs": [],
-				"name": "balance",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "cancel_withdraw",
 				"outputs": [],
 				"stateMutability": "nonpayable",
@@ -181,6 +168,19 @@
 				"name": "collaboratorSign",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -258,9 +258,6 @@
 			},
 			"kind": "user",
 			"methods": {
-				"balance()": {
-					"notice": "当前余额，单位是wei"
-				},
 				"cancel_withdraw()": {
 					"notice": "发起方才能直接取消提款"
 				},
@@ -301,11 +298,11 @@
 	},
 	"sources": {
 		"contracts/MultisigWallet.sol": {
-			"keccak256": "0x0ff5be2ef7bf625c71998ab7f84d93f30f0f4e05c564670b2e6ea740256f69a1",
+			"keccak256": "0x251b0f8f782986dd88e139ad8d3e28418c23ad6ddf831bde6a0915883780b1da",
 			"license": "LGPL-3.0-only",
 			"urls": [
-				"bzz-raw://a86ff8e09400b27795dda6d89a4b6a7679803807f761b983081c9aee4413071a",
-				"dweb:/ipfs/QmesAGWPYEMkCiizodbBHnuuTX5QyGBexP6QK1aHukwg6d"
+				"bzz-raw://d11948c31d18630dec2836b974ebd4b11f16ac69c9f8383335acb03556648d1c",
+				"dweb:/ipfs/QmNfDQkxVNNNipt2v6Wo1KbU787EotSbqiht4YEqvWboNf"
 			]
 		}
 	},

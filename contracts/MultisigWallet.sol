@@ -6,8 +6,6 @@ pragma solidity ^0.8.0;
 */
 contract MultisigWallet {
 	
-	///当前余额，单位是wei
-	uint public balance;
     ///合约拥有者、发布者，还没想好怎么用。
 	address owner;
 
@@ -74,6 +72,10 @@ contract MultisigWallet {
         withdraw_free_count = 5;
 	}
 
+	function getBalance() public view returns (uint){
+		return address(this).balance;
+	}
+
     function changePlatformAccount(address newAccount) public {
         require(msg.sender == platform_account, "only platform account itself can change it to other account");
         platform_account = payable(newAccount);
@@ -115,13 +117,12 @@ contract MultisigWallet {
 	/// 充值转入，谁都可以转，用于收款
 	receive() external payable {
 		require(msg.value > 0, "store must more than 0 wei, indeed the gas fee do not decrease if you topin a low value.");
-		balance += msg.value;
 		emit Deposit(msg.sender,  msg.value);
 	}
 
 	function process_withdraw(uint weis, address payable targetAddress) public onlyCollaborators {
 		require(waitfor_withdraw_wei == 0, "pre process has not been over");		
-		require(weis <= balance, "withdraw balance could not more than balance");
+		require(weis <= getBalance(), "withdraw balance could not more than balance");
 		require(targetAddress != address(0x0), "invalid targetAddress");
 		initiator = msg.sender;
 		waitfor_withdraw_wei = weis;
@@ -192,7 +193,6 @@ contract MultisigWallet {
         uint weis = waitfor_withdraw_wei;
         waitfor_withdraw_wei = 0;
         waitfor_withdraw_address.transfer(weis);
-        balance =  balance - weis;
         withdraw_count++;
         delete waitfor_withdraw_address ;
         delete current_signed;
