@@ -3,7 +3,7 @@
 ## description
 An simple example of multisigwallet working mechanism, may have many security bugs, DO NOT use this code in your products.
 
-## what a multisig wallet's value?
+## what is the value of multisig-wallet?
 ### improve transaction security 
 When you sign a transaction in a 2/3 multisig model, you hold two signer (two private keys), and the third party hold 
 one in the cloud. You can create a transaction and regard the third party signer as a Multi-Factor Authentication, so 
